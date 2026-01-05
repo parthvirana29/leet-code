@@ -17,11 +17,11 @@ class Solution:
         timeTaken = []
         for i, j in sorted_combine:
             timeTaken.append((target - i) / j)
-        print(sorted_combine)
-        print(timeTaken)
         stack = []
         res = 0
         # should be monotonically decreasing stack
+
+        # reverse the timeTaken so we know the arrival time from closest to target to farthest. For ex: 6, 2, 12 so if it's not reversed we will separate [6], [2,12]. However it should be [6,2,12] in one group so knowing the future is important hence reverse timeTaken
         for i in reversed(timeTaken):
             if (stack == []):
                 stack.append(i)
@@ -30,7 +30,6 @@ class Solution:
                     continue
                 res += 1
                 stack = [i]
-            print(stack)
         if (stack != []):
             res += 1
         return res
