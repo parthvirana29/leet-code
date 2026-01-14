@@ -5,7 +5,6 @@ class Solution:
         rowLen = totalSpace / r
         if (r * c != totalSpace ):
             return mat
-        print("row len", rowLen)
         xLen = len(mat[0])
         yLen = len(mat)
         res = []
@@ -21,8 +20,6 @@ class Solution:
                 curRow.append(mat[y][x])
                 curr += 1
                 temp += 1
-                print(x, y)
-                print (curRow)
             res.append(curRow)
         return res
         
