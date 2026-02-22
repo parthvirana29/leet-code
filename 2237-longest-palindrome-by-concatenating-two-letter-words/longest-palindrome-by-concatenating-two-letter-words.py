@@ -1,26 +1,19 @@
-class Solution:
-    def longestPalindrome(self, words: List[str]) -> int:
-        freqMap = {}
-        result = 0
-        seenDouble = False
-        for i in words:
-            reverse = i[1] + i[0]
-            print(reverse)
-            if reverse in freqMap:
-                if (freqMap[reverse] > 0):
-                    freqMap[reverse] -= 1
-                    result += 4
-                else:
-                    # you missed this important!! Add [i] to freqMap if not used
-                    freqMap[i] = freqMap.get(i,0) + 1
-            
+class Solution(object):
+    def longestPalindrome(self, words):
+        mpp = [[0]*26 for _ in range(26)]
+        count = 0
+        middle = 0
+        for s in words:
+            x, y = ord(s[0]) - ord('a'), ord(s[1]) - ord('a')
+            if mpp[y][x] > 0:
+                mpp[y][x] -= 1
+                count += 4
+                if x == y:
+                    middle -= 1
             else:
-                freqMap[i] = freqMap.get(i,0) + 1
-        for k,v in freqMap.items():
-            if k[0] == k[1] and v > 0:
-                result += 2
-                break
-
-            
-
-        return result
+                mpp[x][y] += 1
+                if x == y:
+                    middle += 1
+        if middle > 0:
+            count += 2
+        return count
