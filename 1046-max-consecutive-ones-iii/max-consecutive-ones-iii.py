@@ -11,7 +11,6 @@ class Solution:
                 localK -= 1
                 maxLen = max(maxLen, r - l + 1)
                 
-            
             else:
                 maxLen = max(maxLen, r - l)
                
@@ -20,6 +19,7 @@ class Solution:
                         localK += 1
                       
                     l += 1
+                # VERY VERY VERY IMPORTANT. Decrement localK to account for 0 you just found!!!! So at the end localK = 0 but l is shifted.
                 localK -= 1
                 
 
