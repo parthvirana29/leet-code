@@ -1,47 +1,19 @@
-from collections import deque
-class LRUCache:
+from collections import OrderedDict
 
+class LRUCache:
     def __init__(self, capacity: int):
         self.capacity = capacity
-        self.cache = {}
-        self.queue = deque()
-        self.size = 0
+        self.cache = OrderedDict()
 
     def get(self, key: int) -> int:
-        if key in self.cache:
-            if key in self.queue:
-                self.queue.remove(key)
-                self.queue.append(key)
-            return self.cache[key]
-        return -1
-
-        
+        if key not in self.cache:
+            return -1
+        self.cache.move_to_end(key)  # O(1)
+        return self.cache[key]
 
     def put(self, key: int, value: int) -> None:
-        if (key in self.cache):
-            self.cache[key] = value
-            self.queue.remove(key)
-            self.queue.append(key)
-            return
-        newSize = self.size + 1
-        if newSize > self.capacity:
-            key2 = self.queue.popleft()
-            self.cache.pop(key2)
-            self.cache[key] = value
-            self.queue.append(key)
-            return
-
-        self.size += 1
-        self.queue.append(key)
+        if key in self.cache:
+            self.cache.move_to_end(key)  # O(1)
         self.cache[key] = value
-
-        
-
-
-        
-
-
-# Your LRUCache object will be instantiated and called as such:
-# obj = LRUCache(capacity)
-# param_1 = obj.get(key)
-# obj.put(key,value)
+        if len(self.cache) > self.capacity:
+            self.cache.popitem(last=False)  # O(1) evict LRU
