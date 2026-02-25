@@ -11,7 +11,9 @@ class Solution:
         pathLength = 0
         # adding 1 as default path length
         queue = deque([(0,0,1)])
-        visited = set()
+        # use 2D matrix instead of a set of tuples because tuples are hashed carrying significant overhead
+        visited = [[False] * cols for _ in range(rows)]
+        visited[0][0] = True
 
         print("Start queue: ", queue)
         print("Start visited: ", visited)
@@ -21,12 +23,12 @@ class Solution:
             i, j, pathlength = curr
             if i + 1 == rows and j + 1 == cols:
                 return pathlength
-            visited.add(curr)
+            visited[i][j] = True
             nodeSeen = False
             for dr, dc in directions:
                 nr, nc = i + dr, j + dc
-                if (0 <= nr < rows and 0 <= nc < cols and (nr,nc) not in visited and grid[nr][nc] == 0):
+                if (0 <= nr < rows and 0 <= nc < cols and not visited[nr][nc] and grid[nr][nc] == 0):
                     queue.append((nr,nc, pathlength + 1))
-                    visited.add((nr,nc))
+                    visited[nr][nc] = True
         return -1
                 
