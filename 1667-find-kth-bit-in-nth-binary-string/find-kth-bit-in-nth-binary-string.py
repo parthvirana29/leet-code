@@ -1,19 +1,20 @@
 class Solution:
-    def invert(self, string):
-        res = ''
-        for i in range(len(string)):
-            if string[i] == '0':
-                res += '1'
-            else:
-                res += '0'
-        return res
-
     def findKthBit(self, n: int, k: int) -> str:
-        string = '0'
-        prev = '0'
-        for i in range(1,n):
-            prev = string
-            string =  prev + '1' + self.invert(prev)[::-1]
+        length = 2**n -1
+        
+        def helper(length,k):
+            if length == 1:
+                return '0'
+            
+            half = length// 2
+            if k <= half:
+                return helper(half, k)
+            elif k > half + 1:
+                res = helper( half, 1 + length - k)
+                return "0" if res == "1" else "1"
 
 
-        return string[k-1]
+            else:
+                return '1'
+        return helper(length, k)
+        
