@@ -18,7 +18,6 @@ class Solution:
                 else:
                     arr2[i] = '0'
                 num2Changes += 1
-            print("i: ", i, " numchanges: ", numChanges, " numm2Changes: ", num2Changes)
         return min(numChanges, num2Changes)
 
     
