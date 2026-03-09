@@ -1,30 +1,19 @@
 class Solution:
     def convert(self, s: str, numRows: int) -> str:
-        res = [["" for i in range(len(s))]for j in range(numRows)]
-        row, col = 0, 0
-        idx = 0
-        while (idx < len(s)):
-            if (row == 0):
-                for i in range(numRows):
-                    if (idx >= len(s)):
-                        break
-                    res[i][col] = s[idx]
-                    idx += 1
-                row = numRows - 1
-                col += 1
-            if (row == numRows - 1):
-                for i in range(numRows - 2,0,-1):
-                    if (idx >= len(s)):
-                        break
-                    res[i][col] = s[idx]
-                    idx += 1
-                    col += 1
-                row = 0
+        if numRows == 1 or numRows >= len(s):
+            return s
+        idx, d = 0, 1
+        rows = [[] for _ in range(numRows)]
+        for char in s:
+            rows[idx].append(char)
+            if idx == 0:
+                d = 1
+            elif idx == numRows - 1:
+                d = -1
+            idx += d
 
-        zigzag = "".join(ch for row in res for ch in row if ch != "")
-        return zigzag
-
-
+        for i in range(numRows):
+            rows[i] = ''.join(rows[i])
+        return ''.join(rows)
 
             
-
