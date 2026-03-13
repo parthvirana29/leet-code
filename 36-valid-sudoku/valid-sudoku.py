@@ -30,12 +30,10 @@ class Solution:
                     uniqueSet = set()
                     for i in range(startY, startY + 3):
                         for j in range(startX, startX + 3):
-                            print(i,j)
                             if board[i][j] != "." and board[i][j] in uniqueSet:
                                 
                                 return False
                             uniqueSet.add(board[i][j])
-                    print("_________________________")
                     startX += 3
                 startY += 3
             return True
