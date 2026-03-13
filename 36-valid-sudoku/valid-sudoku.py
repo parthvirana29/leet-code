@@ -1,41 +1,29 @@
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        def checkHorizontal(board):
-            for i in range(len(board)):
-                uniqueSet = set()
-                for j in range(len(board[0])):
-                    if board[i][j] != "." and board[i][j] in uniqueSet:
+        vertSet = [set() for i in range(9)]
+        horSet = [set() for i in range(9)]
+        boxSet = [set() for i in range(9)]
+        rows = 9
+        cols = 9
+        for i in range(rows):
+            for j in range(cols):
+                # check horizontal
+                if board[i][j] != '.': 
+                    num = board[i][j]
+                    if  num  in horSet[i]:
                         return False
-                    uniqueSet.add(board[i][j])
-                # print("Horizontal Unique set: ", uniqueSet)
-            return True
-        
-        def checkVertical(board):
-            for i in range(len(board)):
-                uniqueSet = set()
-                for j in range(len(board[0])):
-                    if board[j][i] != "." and board[j][i] in uniqueSet:
+                    horSet[i].add(num)
+                    
+                    # check Vertical
+                    if num in vertSet[j]:
                         return False
-                    uniqueSet.add(board[j][i])
-                # print("Vertical Unique Set: ", uniqueSet)
-            return True
+                    vertSet[j].add(num)
+                    
+                    # check 3by3
 
-
-        def check3By3(board):
-            startX = 0
-            startY = 0
-            for vert in range(3):
-                startX = 0
-                for h in range(3):
-                    uniqueSet = set()
-                    for i in range(startY, startY + 3):
-                        for j in range(startX, startX + 3):
-                            if board[i][j] != "." and board[i][j] in uniqueSet:
-                                
-                                return False
-                            uniqueSet.add(board[i][j])
-                    startX += 3
-                startY += 3
-            return True
-        return checkHorizontal(board) and checkVertical(board) and check3By3(board)
-
+                    boxNum = (i // 3) * 3 + (j//3)
+                    if num in boxSet[boxNum]:
+                        return False
+                    boxSet[boxNum].add(num)
+        return True
+            
