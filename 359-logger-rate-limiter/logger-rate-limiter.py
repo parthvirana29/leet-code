@@ -2,17 +2,17 @@ from collections import deque
 class Logger:
 
     def __init__(self):
-        self.queue = deque()
+        self.msg_log = {}
+        self.RATE_LIMIT = 10
 
     def shouldPrintMessage(self, timestamp: int, message: str) -> bool:
         # anything older than 10 seconds drop it
-        while (self.queue and  timestamp - 10 >= self.queue[0][0] ):
-            self.queue.popleft()
-        for time, old_msg in self.queue:
-            if message == old_msg:
-                return False
-        self.queue.append([timestamp, message])
+        if message in self.msg_log and  timestamp - self.msg_log[message] < self.RATE_LIMIT:
+            return False
+
+        self.msg_log[message] = timestamp
         return True
+
 
 
         
