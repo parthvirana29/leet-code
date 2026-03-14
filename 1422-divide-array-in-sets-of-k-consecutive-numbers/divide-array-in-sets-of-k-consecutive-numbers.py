@@ -8,6 +8,7 @@ class Solution:
         freq = Counter(nums)
         sorted_keys = sorted(freq.keys())
         for num in sorted_keys :
+            # if frequency is 0 then the number is compeletely used can't be used in another arry of k elements
             if (freq[num] == 0):
                 continue
             curr_freq = freq[num]
