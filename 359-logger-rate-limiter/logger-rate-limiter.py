@@ -1,4 +1,6 @@
 from collections import deque
+
+# my first approach was to use deque but it was slow because I kept updating the storage. PLEASE READ THE PROBLEM CUTIE
 class Logger:
 
     def __init__(self):
