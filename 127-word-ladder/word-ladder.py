@@ -1,6 +1,7 @@
 from collections import defaultdict, deque
 from typing import List
 
+# defaultdict ensures the defaults are returned when we call a function and something does not exist
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
         
