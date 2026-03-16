@@ -1,27 +1,24 @@
-
+from collections import deque
 class HitCounter:
 
     def __init__(self):
-        self.mono_stack = []
-        self.l = 0
+        self.mono_q = deque()
         
 
     def hit(self, timestamp: int) -> None:
-        self.mono_stack.append(timestamp)
+        self.mono_q.append(timestamp)
         # self.freq[timestamp] = self.freq.get(timestamp, 0 ) + 1
         
             
-        while self.l < len(self.mono_stack) and self.mono_stack[self.l] <= timestamp - 300:
-            self.l += 1
-        print(self.mono_stack)
-        print(self.l)
+        while self.mono_q and self.mono_q[0] <= timestamp - 300:
+            self.mono_q.popleft()
+        print(self.mono_q)
 
     def getHits(self, timestamp: int) -> int:
-        while self.l < len(self.mono_stack) and self.mono_stack[self.l] <= timestamp - 300:
-            self.l += 1
-        print(self.mono_stack)
-        print(self.l)
-        return len(self.mono_stack) - self.l
+        while self.mono_q and self.mono_q[0] <= timestamp - 300:
+            self.mono_q.popleft()
+        print(self.mono_q)
+        return len(self.mono_q) 
     
         
 
