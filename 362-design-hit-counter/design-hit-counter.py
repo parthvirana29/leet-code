@@ -7,7 +7,6 @@ class HitCounter:
         
 
     def hit(self, timestamp: int) -> None:
-        prev = 0
         if self.mono_q:
             prev_ts, freq = self.mono_q[-1]
             if (timestamp == prev_ts):
