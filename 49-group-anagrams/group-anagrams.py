@@ -5,7 +5,6 @@ class Solution:
             sorted_str = str(sorted(list(i)))
             freq[sorted_str] = freq.get(sorted_str,[])
             freq[sorted_str].append(idx)
-        print(freq)
         result = []
         for key, val in freq.items():
             temp = []
