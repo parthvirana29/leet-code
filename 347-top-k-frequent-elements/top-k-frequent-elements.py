@@ -5,19 +5,19 @@ class Solution:
         freq = {}
         for i in nums:
             freq[i] = freq.get(i,0) + 1
-        freq_lst = [[] for i in range(len(nums))]
+
+        freq_lst = [[] for i in range(len(nums)+1)]
+
         for key,value in freq.items():
-            freq_lst[value-1].append(key)
+            freq_lst[value].append(key)
+
         res = []
         for i in range(len(freq_lst)-1,-1,-1):
-            if freq_lst[i] != []:
-                print("I get in here")
-                j = len(freq_lst[i])
-                while (j > 0  and k > 0):
-                    res.append(freq_lst[i][j-1])
-                    print("res: ", res)
-                    k -= 1
-                    j -= 1
+            for n in freq_lst[i]:
+                res.append(n)
+                if (len(res) == k):
+                    return res
+            
         return res
 
 
