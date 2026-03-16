@@ -5,13 +5,10 @@ class Solution:
         freq = {}
         for i in nums:
             freq[i] = freq.get(i,0) + 1
-        print(freq)
         freq_lst = [[] for i in range(len(nums))]
-        print(freq_lst)
         for key,value in freq.items():
             freq_lst[value-1].append(key)
         res = []
-        print(freq_lst)
         for i in range(len(freq_lst)-1,-1,-1):
             if freq_lst[i] != []:
                 print("I get in here")
