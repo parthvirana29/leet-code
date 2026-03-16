@@ -1,23 +1,15 @@
-from collections import deque
-
-# my first approach was to use deque but it was slow because I kept updating the storage. PLEASE READ THE PROBLEM CUTIE
 class Logger:
 
     def __init__(self):
-        self.msg_log = {}
-        self.RATE_LIMIT = 10
+        self.log = {}
+        
 
     def shouldPrintMessage(self, timestamp: int, message: str) -> bool:
-        # anything older than 10 seconds drop it
-        if message in self.msg_log and  timestamp - self.msg_log[message] < self.RATE_LIMIT:
+        if message in self.log and self.log[message] > timestamp - 10:
             return False
-
-        self.msg_log[message] = timestamp
+        self.log[message] = timestamp
         return True
 
-
-
-        
         
 
 
