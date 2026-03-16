@@ -3,22 +3,26 @@ class HitCounter:
 
     def __init__(self):
         self.mono_q = deque()
+        self.total = 0
         
 
     def hit(self, timestamp: int) -> None:
-        self.mono_q.append(timestamp)
-        # self.freq[timestamp] = self.freq.get(timestamp, 0 ) + 1
-        
-            
-        while self.mono_q and self.mono_q[0] <= timestamp - 300:
-            self.mono_q.popleft()
-        print(self.mono_q)
+        prev = 0
+        if self.mono_q:
+            prev_ts, freq = self.mono_q[-1]
+            if (timestamp == prev_ts):
+                self.mono_q[-1][1] += 1
+                self.total += 1
+                return
+        self.mono_q.append([timestamp,1])
+        self.total += 1
+    
 
     def getHits(self, timestamp: int) -> int:
-        while self.mono_q and self.mono_q[0] <= timestamp - 300:
-            self.mono_q.popleft()
-        print(self.mono_q)
-        return len(self.mono_q) 
+        while self.mono_q and self.mono_q[0][0] <= timestamp - 300:
+            ts, freq = self.mono_q.popleft()
+            self.total -= freq
+        return self.total
     
         
 
