@@ -3,7 +3,6 @@ import heapq
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
         intervals = sorted(intervals)
-        print(intervals)
         stack = [intervals[0][1]]
         num_rooms = 1
         for i in range(1,len(intervals)):
