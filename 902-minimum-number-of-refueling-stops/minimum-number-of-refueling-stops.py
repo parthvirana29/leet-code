@@ -1,25 +1,43 @@
 import heapq
 class Solution:
     def minRefuelStops(self, target: int, startFuel: int, stations: List[List[int]]) -> int:
-        max_heap = []
-        stops = 0
-        fuel = startFuel
-        prev = 0 # keeping track of previous to know how much distance i travelled from i-1 to i to see how much fuel i burned
-        # this ensures we reach the target and since we use prev, we consider all the edge cases.
+        
+        # start                target
+        # sttations = [] t = 1 startFuel = 1 res = 0 b/c we can reach target without refueling
+        # fuel = 60 - 10 - 10 - 30
+        # [30, 30]
+        if (startFuel == target):
+            return 0
+        if (stations and startFuel < stations[0][0]):
+            return -1
         stations.append([target,0])
+        fuel_in_tank = startFuel
+        prev_pos = 0
+        heap = []
+        num_stops = 0
+
         for i in range(len(stations)):
-            pos, fuel_cap = stations[i][0], stations[i][1]
-            fuel -= (pos - prev)
-            while (max_heap and fuel < 0):
-                # pushing negative fuel_cap because heapq in Python implements min heap by default. Hence keeping - value so max fuel_cap will still be at top of heap
-                fuel +=  - heapq.heappop(max_heap)
-                stops += 1
-            if (fuel < 0):
+            cur_pos, cur_fuel = stations[i]
+            # update the fuel tank
+            distance_travelled = cur_pos - prev_pos
+            fuel_in_tank -= distance_travelled
 
+
+            while (heap and fuel_in_tank < 0):
+                # we need fuel
+                fuel_avail = heapq.heappop(heap)
+                fuel_in_tank += (-1*fuel_avail)
+                # increment num_stops
+                num_stops += 1
+            if (fuel_in_tank < 0):
                 return -1
-            heapq.heappush(max_heap, -fuel_cap)
+                
+
+            heapq.heappush(heap, -1*cur_fuel)
 
 
+            prev_pos = cur_pos
+        return num_stops
 
-            prev = pos
-        return stops
+
+        
