@@ -1,3 +1,5 @@
+# quick select works whenever answer does not have to be in order / sorted but just have to ensure it's k smallest / k largest
+
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
         return self.quick_select(points, k)
