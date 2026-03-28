@@ -9,9 +9,10 @@ class Solution:
         
         if (self.idx == len(preorder)):
             return None
-        node = TreeNode(preorder[self.idx])
-        if  node.val > upper_limit or node.val < lower_limit:
+        val = preorder[self.idx]
+        if not lower_limit < val < upper_limit:
             return None
+        node = TreeNode(preorder[self.idx])
         self.idx += 1
         node.left = self.constructTree(preorder, lower_limit, node.val)
         node.right = self.constructTree(preorder, node.val, upper_limit)
