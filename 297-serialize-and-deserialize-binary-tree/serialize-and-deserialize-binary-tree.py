@@ -11,7 +11,6 @@ class Codec:
                 string = preorder(node.right, string)
                 # 1,2,None, None, 3, 4, None, None, 5, None, None
             return string
-        print(preorder(root,''))
         return preorder(root,'')
         
         
