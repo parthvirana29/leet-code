@@ -10,60 +10,41 @@ class Codec:
     def serialize(self, root: Optional[TreeNode]) -> str:
         """Encodes a tree to a single string.
         """
-        if not root:
-            return ""
-        
-        result = []
-        queue = deque([root])
-        
-        while queue:
-            node = queue.popleft()
-            if node:
-                result.append(str(node.val))
-                queue.append(node.left)
-                queue.append(node.right)
-            else:
-                result.append("null")
-
-        # Remove trailing nulls for compactness
-        while result and result[-1] == "null":
-            result.pop()
-        
-        print(result)
-        
-        ans = ",".join(result)
-        print(ans)
-        return (ans)
-        
+        # performing preorder traversal
+        self.string = ''
+        # serialization should add delimiterss
+        def preorder(root):
+            if not root:
+                return ''
+            self.string += str(root.val) + ','
+            preorder(root.left)
+            preorder(root.right)
+            return self.string
+        return preorder(root)[:-1]
 
     def deserialize(self, data: str) -> Optional[TreeNode]:
         """Decodes your encoded data to tree.
         """
-        # check if we have any data:
-        if not data:
+        if (not data):
             return None
-        
-        values = data.split(',')
-        root = TreeNode(int(values[0]))
-        queue = deque([root])
-        i = 1
-        
-        while queue and i < len(values):
-            node = queue.popleft()
+        self.idx = 0
+        arr = data.split(',')
+        print(arr)
+        def constructTree(data, lower_limit, upper_limit):
+            if (self.idx) == len(data):
+                return None
+            val = int(data[self.idx])
+            if not (lower_limit < val < upper_limit):
+                return None
+            root = TreeNode(val)
+            self.idx += 1
+            root.left = constructTree(data, lower_limit, val)
+            root.right = constructTree(data, val, upper_limit)
+            return root
+
+        return constructTree(arr, float('-inf'), float('inf'))
             
-            # Process left child
-            if i < len(values) and values[i] != "null":
-                node.left = TreeNode(int(values[i]))
-                queue.append(node.left)
-            i += 1
             
-            # Process right child
-            if i < len(values) and values[i] != "null":
-                node.right = TreeNode(int(values[i]))
-                queue.append(node.right)
-            i += 1
-        
-        return root
 
 
 
