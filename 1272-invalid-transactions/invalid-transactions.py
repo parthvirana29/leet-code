@@ -1,29 +1,50 @@
-class Solution:
-    def invalidTransactions(self, transactions: List[str]) -> List[str]:
-        self.amt_lim = 1000
-        self.time_lim = 60
-        self.trans_map = {}
-        invalid_trans = set()
-
-        for i in range(len(transactions)):
-            name, time, amt, loc = transactions[i].split(",")
-            if int(amt) > self.amt_lim:
-                invalid_trans.add(i)
-            self.trans_map[name] = self.trans_map.get(name, [])
-            self.trans_map[name].append((int(time), loc, i))
-        # sort the values by time
-        for key, val in self.trans_map.items():
-            val.sort(key=lambda x:x[0])
-            l = 0
-            for r in range(len(val)):
-                # shrink the window if time > 60
-                while (val[r][0] - val[l][0] > self.time_lim ):
-                    l += 1
-                for k in range(l,r):
-                    if (val[k][1]!= val[r][1]):
-                        invalid_trans.add(val[k][2])
-                        invalid_trans.add(val[r][2])
-        return [transactions[r] for r in invalid_trans]
-
-
+class Solution(object):
+    def invalidTransactions(self, transactions):
+        """
+        :type transactions: List[str]
+        :rtype: List[str]
+        """
         
+        r = {}
+                
+        inv = []        
+        for i in transactions:
+            split = i.split(",")
+            name = str(split[0])
+            time = int(split[1])
+            amount = int(split[2])
+            city = str(split[3])
+            
+            if time not in r:
+                r[time] = {
+                    name: set([city]) # use set instead of list
+                }
+            else:
+                if name not in r[time]:
+                    r[time][name]=set([city]) # use set instead of list
+                else:
+                    r[time][name].add(city)
+                    
+        
+        for i in transactions:
+            split = i.split(",")
+            name = str(split[0])
+            time = int(split[1])
+            amount = int(split[2])
+            city = str(split[3])
+            
+            
+            if amount > 1000:
+                inv.append(i)
+                continue
+            
+            for j in range(time-60, time+61):
+                if j not in r:
+                    continue
+                if name not in r[j]:
+                    continue
+                if len(r[j][name]) > 1 or (next(iter(r[j][name])) != city): # get an element from set
+                    inv.append(i)
+                    break
+                                        
+        return inv 
