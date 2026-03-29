@@ -3,10 +3,7 @@ import heapq
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
         freq = Counter(tasks)
-        print(freq)
         heap =  [-f for f in list(freq.values())]
-        print(heap)
-        num_tasks = len(heap)
         heapq.heapify(heap)
         time = 0
         while (heap):
