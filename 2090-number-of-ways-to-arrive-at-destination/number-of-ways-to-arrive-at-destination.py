@@ -5,7 +5,6 @@ class Solution:
         for u, v, time in roads:
             graph[u].append([v,time])
             graph[v].append([u,time])
-        print(graph)
         opt_times = [float('inf')] * n
         ways = [1] * n
         pq = [[0,0]] # time, u
