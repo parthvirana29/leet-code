@@ -8,13 +8,17 @@ class MedianFinder:
         
 
     def addNum(self, num: int) -> None:
-        heapq.heappush(self.low_nums, -1*num)
-        if len(self.low_nums) > 1 + len(self.high_nums) or (self.high_nums and self.high_nums[0] < (-1*self.low_nums[0])):
+        if (not self.low_nums or num < (-1*self.low_nums[0])):
+            heapq.heappush(self.low_nums, -1*num)
+        else:
+            heapq.heappush(self.high_nums, num)
+
+        if (len(self.low_nums) > 1  + len(self.high_nums)):
             elem = -1*heapq.heappop(self.low_nums)
             heapq.heappush(self.high_nums, elem)
-        if len(self.high_nums) > 1 + len(self.low_nums):
-            elem = heapq.heappop(self.high_nums)
-            heapq.heappush(self.low_nums, -1*elem)
+        elif (len(self.high_nums) > 1 + len(self.low_nums)):
+            elem = -1 * heapq.heappop(self.high_nums)
+            heapq.heappush(self.low_nums, elem)
 
     def findMedian(self) -> float:
         n_low = len(self.low_nums)
