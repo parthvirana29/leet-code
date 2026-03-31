@@ -1,53 +1,32 @@
 import heapq
 
-
 class MedianFinder:
 
     def __init__(self):
-        self.max_heap = []
-        self.min_heap = []
-        heapq.heapify(self.max_heap)
-        heapq.heapify(self.min_heap)
-   
+        self.low_nums = [] # negative values because I want highest value
+        self.high_nums = []
+        
+
     def addNum(self, num: int) -> None:
-        # however u can't simply print
-        heapq.heappush(self.max_heap, -num)
-        len_difference = len(self.max_heap) - len(self.min_heap)
-        if (len(self.max_heap) > 1 + len(self.min_heap) or (self.min_heap and -self.max_heap[0] > self.min_heap[0])):
-            # find the max in max_heap - O(1)
-            # also invert the number
-            max_in_max_heap = -self.max_heap[0]
-            # remove the largest value from max_heap - O(log n)
-            heapq.heappop(self.max_heap)
-            # add the largest value from max_heap - O(log n)
-            heapq.heappush(self.min_heap, max_in_max_heap)
-        if (len(self.min_heap) > 1 + len(self.max_heap)):
-            min_in_min_heap = -1 * self.min_heap[0]
-            # remove the largest value from max_heap - O(log n)
-            heapq.heappop(self.min_heap)
-            # add the largest value from max_heap - O(log n)
-            heapq.heappush(self.max_heap, min_in_min_heap)
+        heapq.heappush(self.low_nums, -1*num)
+        if len(self.low_nums) > 1 + len(self.high_nums) or (self.high_nums and self.high_nums[0] < (-1*self.low_nums[0])):
+            elem = -1*heapq.heappop(self.low_nums)
+            heapq.heappush(self.high_nums, elem)
+        if len(self.high_nums) > 1 + len(self.low_nums):
+            elem = heapq.heappop(self.high_nums)
+            heapq.heappush(self.low_nums, -1*elem)
 
     def findMedian(self) -> float:
-        # find len
-        n_max = len(self.max_heap)
-        n_min = len(self.min_heap)
-        total = n_max + n_min
-        median = 0
-        if (total) % 2 == 0:
-            median = (-self.max_heap[0] + self.min_heap[0])/2
-        else:
-            if (n_max > n_min):
-                return -self.max_heap[0]
-            else:
-                return self.min_heap[0]
-        return median
-
-            
-
-        
-
-        
+        n_low = len(self.low_nums)
+        n_high = len(self.high_nums)
+        total = n_low + n_high
+        if (total % 2 == 0 and self.low_nums and self.high_nums):
+            return ((-1*self.low_nums[0]) + self.high_nums[0])/2
+        elif (total % 2 != 0 ):
+            if (n_low > n_high):
+                return -1*self.low_nums[0]
+            return self.high_nums[0]
+        return 0
 
 
 # Your MedianFinder object will be instantiated and called as such:
