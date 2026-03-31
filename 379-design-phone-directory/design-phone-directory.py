@@ -2,29 +2,24 @@ class PhoneDirectory:
 
     def __init__(self, maxNumbers: int):
         self.max_limit = maxNumbers
-        self.used = set()
-        self.un_used = set([i for i in range(self.max_limit)])
-        print(self.un_used)
+        self.available = set(range(maxNumbers))
 
     def get(self) -> int:
-        if self.un_used:
-            temp = self.un_used.pop()
-            self.used.add(temp)
-            return temp
+        if self.available:
+            return self.available.pop()
         return -1
     
 
     def check(self, number: int) -> bool:
-        if number in self.un_used:
+        if number in self.available:
             return True
         return False
         
 
     def release(self, number: int) -> None:
-        if number not in self.used:
+        if number in self.available:
             return
-        self.used.remove(number)
-        self.un_used.add(number)
+        self.available.add(number)
         
 
 
