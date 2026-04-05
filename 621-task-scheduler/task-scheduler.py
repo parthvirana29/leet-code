@@ -1,37 +1,29 @@
-from collections import Counter
-import heapq
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
-        """
-        Example 1:
-        [A, A, A, B, B, B]
-        n = 2
+        counter = Counter(tasks)
+        print(counter)
+        max_freq = max(counter.values())
+        elems_with_max_freq = 0
+        for key, val in counter.items():
+            
+            if val == max_freq:
+                elems_with_max_freq += 1
         
-        A _ _ A _ _ A
-        -> [A _ _] [A _ _] [A] -> (max_freq - 1)
-        => A _ _ => (n + 1)
-        ~> A & B both appear 3 times
-        (max_freq - 1) * (n + 1) + num_max = (3 - 1) * (2 + 1) + 2
+        print(max_freq)
+        unique_elems = len(counter)
+        total_elems = len(tasks)
+        print(elems_with_max_freq)
+        # a,a,a,b,b,b n = 2, 8 
+        # a,c,a,b,d,b n = 1, 6 
+        # a,a,a,b,b,b n = 3, 10 
 
-        Example 2:
-        [A, A, A, B, B]
-        n = 2
-        
-        (max_freq - 1) * (n + 1) + num_max = (3 - 1) * (2 + 1) + 1
 
-        Example 3:
-        [A, A, A, B, B, B, C, C, D, D]
-        n = 2
+        # A,B,A,B,C,D
+        # unique = 4, max_freq = 2, total_elems = 6
+        # total - unique = 2
+        # which means 2 elements have max_freq = 2
+    
+        res = max(len(tasks), (max_freq - 1)* (n+1) + elems_with_max_freq)
+ 
+        return res
 
-        A _ _ A _ _ A _ _
-        A B _ A B _ A B _
-        A B C A B D A B C...
-        (max_freq - 1) * (n + 1) + num_max => not enough for all tasks
-
-        so, only len(tasks) will be enough (no idle needed)
-        """
-        task_count = Counter(tasks).values()
-        max_freq = max(task_count)
-        num_max = list(task_count).count(max_freq)
-
-        return max(len(tasks), (max_freq - 1) * (n + 1) + num_max)
