@@ -1,28 +1,20 @@
+from sortedcontainers import SortedDict
 class MyCalendarTwo:
     def __init__(self):
-        self.single_booked = []
-        self.double_booked = []
+        self.booking_count = SortedDict()
+        self.max_overlapped_booking = 2
     
-    def get_overlap(self, start1, end1, start2 ,end2):
-        overlap_start = max(start1,start2)
-        overlap_end = min(end1, end2)
-        if (overlap_start < overlap_end):
-            return (overlap_start,overlap_end)
-
-        return None
-
-    def book(self, startTime: int, endTime: int) -> bool:
-        for db_start, db_end in self.double_booked:
-            if startTime < db_end and endTime > db_start:
+    def book(self, start: int, end: int) -> bool:
+        self.booking_count[start] = self.booking_count.get(start, 0) + 1
+        self.booking_count[end] = self.booking_count.get(end, 0) - 1
+        
+        overlapped_booking = 0
+        for count in self.booking_count.values():
+            overlapped_booking += count
+            if overlapped_booking > self.max_overlapped_booking:
+                self.booking_count[start] -= 1
+                self.booking_count[end] += 1
+                if self.booking_count[start] == 0:
+                    del self.booking_count[start]
                 return False
-        for sb_start, sb_end in self.single_booked:
-            overlap = self.get_overlap(startTime, endTime, sb_start,sb_end)
-            if overlap:
-                self.double_booked.append(overlap)
-        self.single_booked.append((startTime, endTime))
         return True
-
-
-# Your MyCalendarTwo object will be instantiated and called as such:
-# obj = MyCalendarTwo()
-# param_1 = obj.book(startTime,endTime)
