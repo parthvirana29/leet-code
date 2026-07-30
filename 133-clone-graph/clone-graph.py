@@ -6,21 +6,29 @@ class Node:
         self.neighbors = neighbors if neighbors is not None else []
 """
 
-from typing import Optional
+from collections import deque
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
         if not node:
             return None
 
         visited = {}
-        def dfs(node):
-            if node in visited:
-                return visited[node]
-            dupe = Node(node.val)
-            visited[node] = dupe
-            n_dupe_lst = []
-            for n in node.neighbors:
-                n_dupe_lst.append(dfs(n))
-            dupe.neighbors = n_dupe_lst
-            return dupe
-        return dfs(node)
+
+        queue = deque([node])
+        visited[node] = Node(node.val, [])
+
+        # BFS traversal
+        while queue:
+            curr = queue.popleft()
+            for neighbor in curr.neighbors:
+                # mark each neighboring node as visited
+                if neighbor not in visited:
+                    visited[neighbor] = Node(neighbor.val, [])
+                    # notice how we are adding orginal neighbor and not dupe because original has all the relationships
+                    queue.append(neighbor)
+                visited[curr].neighbors.append(visited[neighbor])
+        return visited[node]
+
+                
+        return visited[node]
+        
